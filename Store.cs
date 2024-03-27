@@ -1,19 +1,29 @@
+
 namespace inventory_management_assignment
 {
+    public enum SortOrder
+    {
+        ACS,
+        DESC
+    }
     public class Store
     {
         private readonly string _name;
         private List<Item> _items;
-
-        public Store(string name)
+        private int _capacity;
+        public Store(string name, int capacity)
         {
             _name = name;
             _items = [];
+            _capacity = capacity;
+        }
+        public int GetCapacity()
+        {
+            return _capacity;
         }
         public List<Item> GetItems()
         {
             return _items;
-
         }
         public bool FindByName(string itemName)
         {
@@ -26,14 +36,44 @@ namespace inventory_management_assignment
             Console.WriteLine($"{itemName} Item not found");
             return false;
         }
-        public int AmountOfItem(Item item)
+        public List<Item> SortByDate(SortOrder order)
         {
-            return _items.Count;
+            if (order == SortOrder.DESC)
+            {
+                var sorted = _items.OrderByDescending(item => item.GetCreatedAt());
+                return sorted.ToList();
+            }
+            else
+            {
+                return _items.OrderByDescending(item => item.GetCreatedAt()).ToList();
+            }
         }
-        public bool AddItems(Item newItem)
+        public void GroupByDate()
+        {
+            var groupByDate = _items.GroupBy(item => item.GetCreatedAt() >= DateTime.Now.AddMonths(-3) ? "New Arrival" : "Old");
+            foreach (var group in groupByDate)
+            {
+                Console.WriteLine($"{group.Key} Items:");
+                foreach (var item in group)
+                {
+                    Console.WriteLine($" - {item.GetName()}, Created: {item.GetCreatedAt().ToShortDateString()}");
+                }
+            }
+        }
+        public int AmountOfItem()
+        {
+            return _items.Sum(item => item.GetQuantity());
+        }
+        public bool AddItem(Item newItem)
         {
             if (!_items.Any(item => item.GetName() == newItem.GetName()))
             {
+                if (AmountOfItem() + newItem.GetQuantity() >= _capacity)
+                {
+                    Console.WriteLine($"There no capacity");
+
+                    return false;
+                }
                 _items.Add(newItem);
                 return true;
             }
@@ -48,13 +88,5 @@ namespace inventory_management_assignment
         {
             return _items.OrderBy(item => item.GetName()).ToList();
         }
-        // public int Capacity()
-        // {
-            
-        // }
-
-
-
-
     }
 }

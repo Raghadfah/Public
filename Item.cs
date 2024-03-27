@@ -2,12 +2,15 @@ namespace inventory_management_assignment
 {
     public class Item
     {
-        public Item(string name, int quantity)
+        public Item(string name, int quantity, DateTime? dateTime = null)
         {
             _name = name;
             _quantity = quantity;
-            _createdAt = DateTime.Now;
+            _createdAt = dateTime is null ? DateTime.Now : (DateTime)dateTime;
         }
+        private readonly string _name;
+        private int _quantity;
+        private DateTime _createdAt;
         public string GetName()
         {
             return _name;
@@ -16,15 +19,10 @@ namespace inventory_management_assignment
         {
             return _createdAt;
         }
-          public int GetQuantity()
+        public int GetQuantity()
         {
             return _quantity;
         }
-        private readonly string _name;
-        private int _quantity;
-        private DateTime _createdAt;
 
     }
-
-
 }
