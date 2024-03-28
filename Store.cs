@@ -45,7 +45,7 @@ namespace inventory_management_assignment
             }
             else
             {
-                return _items.OrderByDescending(item => item.GetCreatedAt()).ToList();
+                return _items.OrderBy(item => item.GetCreatedAt()).ToList();
             }
         }
         public void GroupByDate()
@@ -71,7 +71,6 @@ namespace inventory_management_assignment
                 if (AmountOfItem() + newItem.GetQuantity() >= _capacity)
                 {
                     Console.WriteLine($"There no capacity");
-
                     return false;
                 }
                 _items.Add(newItem);

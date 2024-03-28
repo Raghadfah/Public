@@ -63,7 +63,6 @@ internal class Program
             Console.WriteLine($"find {store.FindByName("Wildflower Honey")}");
 
             Console.WriteLine($"Name= {item.GetName()} Created_At = {item.GetCreatedAt()} Quantity = {item.GetQuantity()}");
-
         }
         store.GetItems();
         List<Item> SortItems = store.SortItem();
@@ -80,5 +79,4 @@ internal class Program
         }
         store.GroupByDate();
     }
-
 }
